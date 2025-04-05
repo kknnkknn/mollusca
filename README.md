@@ -1,6 +1,3 @@
-
-
-```markdown
 # mollusca
 
 A personal task management app built with Next.js, Prisma, and PostgreSQL.

@@ -28,10 +28,16 @@ npm install
 
 ### 2. Set up `.env`
 
+Copy the provided `.env.sample` and adjust as needed.
+```bash
+cp .env.example .env
+```
+Your .env file should look something like:
 ```dotenv
 # .env
-DATABASE_URL="postgresql://myuser:mypass@localhost:5432/mydatabase"
-NEXTAUTH_SECRET="適当なランダム文字列"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mollusca_dev"
+NEXTAUTH_SECRET="your-random-secret"
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
 ### 3. Set up the database
@@ -40,12 +46,17 @@ NEXTAUTH_SECRET="適当なランダム文字列"
 npx prisma migrate dev --name init
 ```
 
-### 4. Start the dev server
+### 4. Seed initial data (Optionai but recomended)
+
+```bash
+npm run seed
+```
+
+### 5. Start the dev server
 
 ```bash
 npm run dev
 ```
-
 Access the app at [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -54,11 +65,14 @@ Access the app at [http://localhost:3000](http://localhost:3000)
 
 ```text
 .
-├── prisma/             # Prisma schema and migrations
-├── pages/              # Next.js pages and API routes
-├── components/         # React components (予定)
-├── lib/                # Utility functions, DB client (予定)
-└── styles/             # Tailwind CSS
+├── prisma/             # Prisma schema, migrations, and seed scripts
+├── src/
+│   ├── app/            # Next.js App Router (pages and API routes)
+│   ├── components/     # React components (planned)
+│   ├── lib/            # Shared utilities (Prisma Client, helpers, etc.)
+│   └── styles/         # Tailwind CSS and global styles
+├── public/             # Static assets (images, icons, etc.)
+└── docker-compose.yml  # PostgreSQL setup via Docker── styles/             # Tailwind CSS
 ```
 
 ---
@@ -66,11 +80,11 @@ Access the app at [http://localhost:3000](http://localhost:3000)
 ## Features (WIP)
 
 - [x] Setup with Next.js + Tailwind + Prisma
-- [ ] Task CRUD API
+- [x] Task CRUD API
 - [ ] Auth with next-auth (credentials)
 - [ ] Per-user task filtering
 - [ ] UI for task management
-- [ ] Docker化
+- [ ] Docker Compose setup (PostgreSQL)
 - [ ] 本番デプロイ（予定）
 
 ---

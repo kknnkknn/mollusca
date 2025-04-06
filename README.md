@@ -11,7 +11,7 @@ A personal task management app built with Next.js, Prisma, and PostgreSQL.
 - [Prisma](https://www.prisma.io/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [next-auth (予定)](https://next-auth.js.org/) - for authentication
+- [next-auth](https://next-auth.js.org/) - for authentication
 
 ---
 

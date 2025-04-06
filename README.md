@@ -78,7 +78,7 @@ Access the app at [http://localhost:3000](http://localhost:3000)
 
 - [x] Setup with Next.js + Tailwind + Prisma
 - [x] Task CRUD API
-- [ ] Auth with next-auth (credentials)
+- [x] Auth with next-auth (credentials) **(ログインのみ、サインアップは未実装)**
 - [ ] Per-user task filtering
 - [ ] UI for task management
 - [ ] Docker Compose setup (PostgreSQL)

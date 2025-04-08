@@ -26,9 +26,20 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const userId = 1 // 仮の ID
-  const body = await req.json()
+  const session = await getServerSession(authOptions)
 
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized'}, { status: 401 })
+  }
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  })
+
+  if (!user) {
+    return NextResponse.json({ error: 'User not found'}, { status: 404})
+  }
+
+  const body = await req.json()
   if (!body.title || typeof body.title !== 'string') {
     return NextResponse.json({ error: 'Invalid title'}, { status: 400 })
   }
@@ -36,7 +47,7 @@ export async function POST(req: NextRequest) {
   const newTask = await prisma.task.create({
     data: {
       title: body.title,
-      userId,
+      userId: user.id
     }
   })
   return NextResponse.json(newTask, { status: 201 })

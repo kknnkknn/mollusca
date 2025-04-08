@@ -1,29 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma'
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
-export async function PUT(req: NextRequest, context: { params: { id: string }}) {
-  const { id } = await context.params
+export async function PUT(req: NextRequest, { params }: { params: { id: string }}) {
+  const session = await getServerSession(authOptions)
+  
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  })
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  }
+  const { id } = await params
   const taskId = parseInt(id, 10)
-  const body = await req.json()
 
   if (isNaN(taskId)) {
     return NextResponse.json({ error: 'Invalid Task ID' }, { status: 400 })
   }
+
+  const body = await req.json()
   
   if (!body.title || typeof body.title !== 'string') {
     return NextResponse.json({ error: 'Invalid title' }, { status: 400 })
   }
 
-  const existingTask = await prisma.task.findUnique({ where: { id: taskId } })
-  if (!existingTask) {
-    return NextResponse.json({ error: 'Task not found' }, { status: 404 })
-  }
-
-  const updatedTask = await prisma.task.update({
-    where: { id: taskId },
-    data: {
-      title: body.title,
-    },
+  const updatedTask = await prisma.task.update({ 
+    where: { id: taskId, userId: user.id },
+    data: { title: body.title }
   })
 
   return NextResponse.json(updatedTask)
@@ -31,9 +39,23 @@ export async function PUT(req: NextRequest, context: { params: { id: string }}) 
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params
+  const session = await getServerSession(authOptions)
+
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized'}, { status: 401 })
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  })
+
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  }
+  const { id } = await params
+
   const taskId = parseInt(id, 10)
 
   // idが無効な場合のチェック
@@ -41,14 +63,9 @@ export async function DELETE(
     return NextResponse.json({ error: 'Invalid Task ID' }, { status: 400 })
   }
 
-  // 存在確認（安全のため）
-  const existingTask = await prisma.task.findUnique({ where: { id: taskId } })
-  if (!existingTask) {
-    return NextResponse.json({ error: 'Task not found' }, { status: 404 })
-  }
+  const deletedTask = await prisma.task.delete({ 
+    where: { id: taskId, userId: user.id } 
+  })
 
-  // タスク削除
-  await prisma.task.delete({ where: { id: taskId } })
-
-  return NextResponse.json({ message: 'Task deleted successfully' })
+  return NextResponse.json(deletedTask)
 }

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized'}, { status: 401 })
   }
 
-  const user = await prisma.user.findMany({
+  const user = await prisma.user.findUnique({
     where: { email: session.user.email },
   })
 

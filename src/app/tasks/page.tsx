@@ -1,6 +1,12 @@
 import React from 'react'
+import { cookies } from 'next/headers'
+
 async function getTasks() {
+  const cookieStore = cookies()
   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/tasks`, {
+    headers: {
+      Cookie: cookieStore.toString()
+    },
     cache: 'no-store'
   })
 

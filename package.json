@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "ts-node prisma/seed.ts",
-    "tailwind:init": "tailwindcss init -p --ts"
+    "tailwind:init": "tailwindcss init -p --ts",
+    "test": "jest"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",

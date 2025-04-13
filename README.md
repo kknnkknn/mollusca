@@ -12,6 +12,7 @@ A personal task management app built with Next.js, Prisma, and PostgreSQL.
 - [PostgreSQL](https://www.postgresql.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [next-auth](https://next-auth.js.org/) - for authentication
+- [Jest](https://jestjs.io/) (API testing via Supertest)
 
 ---
 
@@ -25,7 +26,7 @@ npm install
 
 ### 2. Set up `.env`
 
-Copy the provided `.env.sample` and adjust as needed.
+Copy the provided `.env.example` and adjust as needed.
 ```bash
 cp .env.example .env
 ```
@@ -37,19 +38,25 @@ NEXTAUTH_SECRET="your-random-secret"
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
-### 3. Set up the database
-
-```bash
-npx prisma migrate dev --name init
+### 3. Start PostgreSQL (via Docker Compose)
+Make sure Docker is running, then:
+```
+docker compose up -d
 ```
 
-### 4. Seed initial data (Optionai but recomended)
+### 4. Set up the database
+
+```bash
+npx prisma migrate dev 
+```
+
+### 5. Seed initial data (Optional but recommended)
 
 ```bash
 npm run seed
 ```
 
-### 5. Start the dev server
+### 6. Start the dev server
 
 ```bash
 npm run dev
@@ -61,15 +68,17 @@ Access the app at [http://localhost:3000](http://localhost:3000)
 ##  Project structure
 
 ```text
-.
-├── prisma/             # Prisma schema, migrations, and seed scripts
+mollusca/
+├── prisma/             # Prisma schema, migrations, seeds
 ├── src/
-│   ├── app/            # Next.js App Router (pages and API routes)
+│   ├── app/            # Next.js App Router (pages, API routes)
+│   │   └── api/        # API routes and their tests (e.g., route.ts, route.test.ts)
 │   ├── components/     # React components (planned)
-│   ├── lib/            # Shared utilities (Prisma Client, helpers, etc.)
+│   ├── lib/            # Shared utilities (Prisma Client, helpers)
 │   └── styles/         # Tailwind CSS and global styles
-├── public/             # Static assets (images, icons, etc.)
-└── docker-compose.yml  # PostgreSQL setup via Docker── styles/             # Tailwind CSS
+├── public/             # Static assets
+├── jest.config.js      # Jest configuration
+└── docker-compose.yml  # Docker setup for PostgreSQL
 ```
 
 ---
@@ -78,23 +87,37 @@ Access the app at [http://localhost:3000](http://localhost:3000)
 
 - [x] Setup with Next.js + Tailwind + Prisma
 - [x] Task CRUD API
-- [x] Auth with next-auth (credentials) **(ログインのみ、サインアップは未実装)**
+- [x] Auth with next-auth (credentials) 
+- [x] User signup functionality
 - [ ] Per-user task filtering
-- [ ] UI for task management
-- [ ] Docker Compose setup (PostgreSQL)
-- [ ] 本番デプロイ（予定）
+- [ ] Frontend UI for tasks
+- [ ] Docker Compose setup improvements
+- [ ] Automated testing (in progress)
+- [ ] Deployment (AWS or Vercel planned)
+
+### Testing 
+
+API tests with Jest and Supertest.
+Run tests:
+```bash
+npm run test
+```
 
 ---
 
-## Notes
+## Development Notes
+PostgreSQL runs via Docker Compose.
+Prisma Studio available with:
 
-- 初期はローカル開発＋PostgreSQLだけDockerで起動
-- Prisma Studio (`npx prisma studio`) でDBをブラウザから確認可能
-- Docker Composeの導入はあとから予定
+```bash
+npx prisma studio
+```
+Next.js App Router structure (src/app) is used.
+UI styling with Tailwind CSS.
 
 ---
 
 ## License
 
-MIT (予定)
+MIT (planned)
 

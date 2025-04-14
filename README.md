@@ -12,7 +12,6 @@ A personal task management app built with Next.js, Prisma, and PostgreSQL.
 - [PostgreSQL](https://www.postgresql.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [next-auth](https://next-auth.js.org/) - for authentication
-- [Jest](https://jestjs.io/) (API testing via Supertest)
 
 ---
 
@@ -72,12 +71,11 @@ mollusca/
 ├── prisma/             # Prisma schema, migrations, seeds
 ├── src/
 │   ├── app/            # Next.js App Router (pages, API routes)
-│   │   └── api/        # API routes and their tests (e.g., route.ts, route.test.ts)
+│   │   └── api/        # API routes (e.g., route.ts)
 │   ├── components/     # React components (planned)
 │   ├── lib/            # Shared utilities (Prisma Client, helpers)
 │   └── styles/         # Tailwind CSS and global styles
 ├── public/             # Static assets
-├── jest.config.js      # Jest configuration
 └── docker-compose.yml  # Docker setup for PostgreSQL
 ```
 

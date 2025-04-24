@@ -28,7 +28,7 @@ export default async function TasksPage() {
   },[])
   
   const handleAddTask = async () => {
-    if (!newTaskTitle) return;
+    if (!newTaskTitle) return
     
     const res = await fetch(`${process.env.NEXT_AUTH_URL}/api/tasks`, {
       method: 'POST',
@@ -36,13 +36,13 @@ export default async function TasksPage() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ title: newTaskTitle })
-    });
+    })
     if (res.ok) {
       const addedTask = await res.json()
       setTasks([...tasks, addedTask])
       setNewTaskTitle('')
     } else {
-      alert('タスクを追加できませんでした');
+      alert('タスクを追加できませんでした')
     }
   }
   const handleEditTask = async (id: number) => {
